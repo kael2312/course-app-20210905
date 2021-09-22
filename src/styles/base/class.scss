@@ -1,0 +1,18 @@
+@import "colors.scss";
+
+.primary-color {
+    @include color($primary);
+}
+
+.secondary-color {
+    @include color($secondary);
+}
+
+.shadow {
+    @include shadow;
+    padding: 20px;
+}
+
+.card {
+    @include card;
+}
