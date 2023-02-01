@@ -13,6 +13,14 @@ import { environment } from '@src/environments/environment';
 import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+const StoreDevtools = !environment.production
+    ? StoreDevtoolsModule.instrument({ maxAge: 50 })
+    : [];
+import { reducers, effects } from './store';
+
 // Date
 import {
     MatNativeDateModule,
@@ -46,6 +54,14 @@ const APP_DATE_FORMATS: MatDateFormats = {
         BrowserAnimationsModule,
         MatNativeDateModule,
         NotificationModule.forRoot(),
+        StoreModule.forRoot(reducers, {
+            runtimeChecks: {
+                strictActionImmutability: true,
+                strictStateImmutability: true,
+            },
+        }),
+        EffectsModule.forRoot(effects),
+        StoreDevtools,
     ],
     providers: [
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Store } from '@ngrx/store';
+import * as fromRoot from './store';
+import * as fromDictionaries from './store/dictionaries';
 
 @Component({
     selector: 'app-root',
@@ -7,17 +10,10 @@ import { AngularFirestore } from '@angular/fire/firestore';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    constructor(private afs: AngularFirestore) {}
+    constructor(private store: Store<fromRoot.State>) {}
 
     ngOnInit(): void {
-        // this.afs.collection('roles').snapshotChanges()
-        //             .pipe(take(1))
-        this.afs
-            .collection('roles')
-            .snapshotChanges()
-            .subscribe((data) => {
-                console.log(data.map((x) => x.payload.doc));
-            });
+        this.store.dispatch(new fromDictionaries.Read());
     }
     title = 'course-app';
 }
