@@ -10,6 +10,7 @@ import { Observable, of, zip } from 'rxjs';
 import { switchMap, map, take, catchError } from 'rxjs/operators';
 import * as fromActions from './dictionaries.actions';
 import { Dictionaries, Dictionary } from './dictionaries.models';
+import * as jsoncountries from '@src/assets/countries.json';
 
 type Action = fromActions.All;
 
@@ -72,17 +73,37 @@ export class DictionariesEffect {
                     .pipe(
                         take(1),
                         map((items) => items.map((x) => documentToItem(x)))
-                    )
+                    ),
+                of(
+                    (jsoncountries as any).default.map((country) => ({
+                        id: country.code.toUpperCase(),
+                        name: country.name,
+                        icon: {
+                            src: null,
+                            cssClass:
+                                'fflag fflag-' + country.code.toUpperCase(),
+                        },
+                    }))
+                )
             ).pipe(
-                map(([roles, specializations, qualifications, skills]) => {
-                    const dictionaries: Dictionaries = {
-                        roles: addDictionary(roles),
-                        qualifications: addDictionary(qualifications),
-                        skills: addDictionary(skills),
-                        specializations: addDictionary(specializations),
-                    };
-                    return new fromActions.ReadSuccess(dictionaries);
-                }),
+                map(
+                    ([
+                        roles,
+                        specializations,
+                        qualifications,
+                        skills,
+                        countries,
+                    ]) => {
+                        const dictionaries: Dictionaries = {
+                            roles: addDictionary(roles),
+                            qualifications: addDictionary(qualifications),
+                            skills: addDictionary(skills),
+                            specializations: addDictionary(specializations),
+                            countries: addDictionary(countries),
+                        };
+                        return new fromActions.ReadSuccess(dictionaries);
+                    }
+                ),
                 catchError((err) => of(new fromActions.ReadError(err.message)))
             );
         })

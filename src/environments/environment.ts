@@ -12,8 +12,12 @@ export const environment = {
             storageBucket: 'course-app-3dcb0.appspot.com',
             messagingSenderId: '172887547829',
             appId: '1:172887547829:web:51d7ddef0410712bb143fc',
-        }
-    }
+        },
+        actionCodeSetting: {
+            url: 'http://localhost:4200/demo',
+            handleCodeInApp: true,
+        },
+    },
 };
 
 /*
