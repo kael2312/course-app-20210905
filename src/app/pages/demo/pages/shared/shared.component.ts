@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ControlItem } from '@app/models/frontend';
 import { NotificationService } from '@app/services';
-import { markFormGroupTouched } from '@app/shared/ultils/form';
+import { markFormGroupTouched } from '@app/shared';
 
 @Component({
     selector: 'app-shared',
